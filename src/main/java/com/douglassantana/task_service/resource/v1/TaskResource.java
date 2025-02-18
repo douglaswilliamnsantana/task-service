@@ -9,6 +9,8 @@ import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
+import static com.douglassantana.task_service.locale.ErrorMessageKeys.INTERNAL_SERVER;
+
 @RestController
 @AllArgsConstructor
 public class TaskResource extends AbstractResource implements TaskApi {
@@ -20,7 +22,7 @@ public class TaskResource extends AbstractResource implements TaskApi {
 
         Task taskModel = Optional.of(task)
                 .map(this.taskRepository::save)
-                .orElseThrow();
+                .orElseThrow(() -> throwsException(INTERNAL_SERVER));
 
         return buildResponse(taskModel);
     }
